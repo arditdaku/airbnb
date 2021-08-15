@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import SmallCard from '../components/SmallCard';
 import MediumCard from '../components/MediumCard';
 import LargeCard from '../components/LargeCard';
+import Footer from '../components/Footer';
 export default function Home({ exploreData, cardsData }) {
     console.log('cards', cardsData);
     return (
@@ -52,6 +53,7 @@ export default function Home({ exploreData, cardsData }) {
                     buttonText={'Get Inspired'}
                 />
             </main>
+            <Footer />
         </div>
     );
 }
