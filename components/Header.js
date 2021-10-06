@@ -10,15 +10,15 @@ import {
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { Calendar, DateRangePicker } from 'react-date-range';
-
-function Header() {
+import { useRouter } from 'next/router';
+function Header({ placeholder }) {
+    const router = useRouter();
     const [searchInput, setSearchInput] = useState('');
 
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [noOfGuests, setNoOfGuests] = useState(1);
     const handleSelect = (ranges) => {
-        console.log(ranges);
         setStartDate(ranges.selection.startDate);
         setEndDate(ranges.selection.endDate);
     };
@@ -26,6 +26,18 @@ function Header() {
     const resetInput = () => {
         setSearchInput('');
     };
+    const search = () => {
+        router.push({
+            pathname: '/search',
+            query: {
+                location: searchInput,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                noOfGuests,
+            },
+        });
+    };
+
     const selectionRange = {
         startDate: startDate,
         endDate: endDate,
@@ -38,7 +50,10 @@ function Header() {
             }
         >
             {/* Left */}
-            <div className={'relative flex items-center h-10 cursor-pointer'}>
+            <div
+                onClick={() => router.push('/')}
+                className={'relative flex items-center h-10 cursor-pointer'}
+            >
                 <Image
                     src="https://links.papareact.com/qd3"
                     layout="fill"
@@ -56,7 +71,7 @@ function Header() {
                     }
                     onChange={(e) => setSearchInput(e.target.value)}
                     value={searchInput}
-                    placeholder={'Start your search'}
+                    placeholder={placeholder || 'Start your search'}
                 />
                 <SearchIcon
                     className={
@@ -94,6 +109,7 @@ function Header() {
                         </h2>
                         <UsersIcon className={'h-5'} />
                         <input
+                            onChange={(e) => setNoOfGuests(e.target.value)}
                             value={noOfGuests}
                             type="number"
                             className={
@@ -111,7 +127,7 @@ function Header() {
                         </button>
                         <button
                             className="flex-grow text-red-400"
-                            onClick={resetInput}
+                            onClick={search}
                         >
                             Search
                         </button>
